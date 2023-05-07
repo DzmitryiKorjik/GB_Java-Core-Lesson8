@@ -1,0 +1,13 @@
+public void insertWeatherData(String city, String localDate, String weatherText, Double temperature) throws SQLException {
+    Connection connection = getConnection(); // Получаем соединение с базой данных
+    String sql = "INSERT INTO weather_data (city, local_date, weather_text, temperature) VALUES (?, ?, ?, ?)";
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setString(1, city);
+        statement.setString(2, localDate);
+        statement.setString(3, weatherText);
+        statement.setDouble(4, temperature);
+        statement.executeUpdate();
+    } finally {
+        connection.close(); // Всегда закрываем соединение с базой данных после использования
+    }
+}
