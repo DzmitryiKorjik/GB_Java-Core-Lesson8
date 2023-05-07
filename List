@@ -1,0 +1,19 @@
+public List<WeatherData> getAllWeatherData() throws SQLException {
+    List<WeatherData> weatherDataList = new ArrayList<>();
+    Connection connection = getConnection(); // Получаем соединение с базой данных
+    String sql = "SELECT city, local_date, weather_text, temperature FROM weather_data";
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String city = resultSet.getString("city");
+            String localDate = resultSet.getString("local_date");
+            String weatherText = resultSet.getString("weather_text");
+            Double temperature = resultSet.getDouble("temperature");
+            WeatherData weatherData = new WeatherData(city, localDate, weatherText, temperature);
+            weatherDataList.add(weatherData);
+        }
+    } finally {
+        connection.close(); // Всегда закрываем соединение с базой данных после использования
+    }
+    return weatherDataList;
+}
